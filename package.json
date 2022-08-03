@@ -9,10 +9,8 @@
   "author": "lvl3",
   "license": "ISC",
   "dependencies": {
-    "core-js": "^3.24.1",
-    "fractional": "^1.0.0",
-    "parcel": "^2.6.2",
-    "regenerator-runtime": "^0.13.9"
+    "fracty": "^1.0.11",
+    "parcel": "^2.6.2"
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.6.2"

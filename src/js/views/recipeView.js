@@ -1,7 +1,7 @@
 import View from './View.js';
 
 import icons from 'url:../../img/icons.svg'; //Parcel 2
-import { Fraction } from 'fractional';
+import { fracty } from 'fracty';
 
 class RecipeView extends View {
   _parentElement = document.querySelector('.recipe');
@@ -9,8 +9,18 @@ class RecipeView extends View {
   _message = ``;
 
   addHandlerRender(handler) {
-    ['hashchange', 'load'].forEach(e => {
-      window.addEventListener(e, handler);
+    ['hashchange', 'load'].forEach(ev => window.addEventListener(ev, handler));
+  }
+
+  addHandlerUpdateServings(handler) {
+    this._parentElement.addEventListener('click', function (e) {
+      const btn = e.target.closest('.btn--update-servings');
+
+      if (!btn) return;
+
+      const { updateTo } = btn.dataset;
+
+      if (+updateTo > 0) handler(+updateTo);
     });
   }
 
@@ -45,12 +55,16 @@ class RecipeView extends View {
                 <span class="recipe__info-text">servings</span>
     
                 <div class="recipe__info-buttons">
-                  <button class="btn--tiny btn--increase-servings">
+                  <button class="btn--tiny btn--update-servings data-update-to="${
+                    this._data.servings - 1
+                  }"">
                     <svg>
                       <use href="${icons}#icon-minus-circle"></use>
                     </svg>
                   </button>
-                  <button class="btn--tiny btn--increase-servings">
+                  <button class="btn--tiny btn--update-servings data-update-to="${
+                    this._data.servings + 1
+                  }"">
                     <svg>
                       <use href="${icons}#icon-plus-circle"></use>
                     </svg>
@@ -105,7 +119,7 @@ class RecipeView extends View {
           <use href="${icons}#icon-check"></use>
         </svg>
         <div class="recipe__quantity">${
-          ing.quantity ? new Fraction(ing.quantity).toString() : ''
+          ing.quantity ? new fracty(ing.quantity).toString() : ''
         }</div>
         <div class="recipe__description">
           <span class="recipe__unit">${ing.unit}</span>
